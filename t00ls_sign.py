@@ -9,7 +9,7 @@ import json
 环境变量约定（用于 GitHub Actions）：
 
 T00LS_USERNAME   -> T00ls 用户名（明文）
-T00LS_PASSWORD   -> T00ls 登录密码的 MD5 值（不是明文密码）
+T00LS_PASSWORD   -> T00ls 登录密码的 32位小写MD5 值（不是明文密码）
 T00LS_QID        -> 安全提问问题 ID（数字：1~7）
 T00LS_QANS       -> 安全提问答案
 T00LS_SCKEY      -> Server 酱 SendKey（可选，不填则不推送）
@@ -26,7 +26,7 @@ questionid 对应关系仅供参考：
 
 # 读取环境变量（GitHub Actions 中从 Secrets 注入）
 username = os.getenv("T00LS_USERNAME", "").strip()
-password = os.getenv("T00LS_PASSWORD", "").strip()          # 这里要求是 MD5 值
+password = os.getenv("T00LS_PASSWORD", "").strip()
 questionid_str = os.getenv("T00LS_QID", "").strip()
 answer = os.getenv("T00LS_QANS", "").strip()
 server_sendkey = os.getenv("T00LS_SCKEY", "").strip()
@@ -78,7 +78,7 @@ def login():
     param = {
         "action": "login",
         "username": username,
-        "password": password,   # 这里要求已经是 MD5
+        "password": password,
         "questionid": questionid,
         "answer": answer
     }
@@ -157,7 +157,7 @@ def main():
 
 def main_handler(event, context):
     """
-    云函数入口兼容（可选）
+    云函数入口兼容
     """
     main()
     return "签到完毕"
