@@ -1,5 +1,5 @@
 **用 GitHub Actions 自动帮你每天在 T00ls 上签到拿积分**。
-下面一步一步教你怎么用（无须自己买服务器，也不用自己去跑脚本）。
+下面一步一步教你怎么用（无须自己买服务器，也不用自己去跑脚本）
 
 ### 一、先 Fork 仓库
 
@@ -12,7 +12,7 @@
 
 进入你 Fork 之后的仓库，按下面步骤：
 
-1. 点顶部的 **Settings**
+1. 点顶部的 **Settings   设置**
 2. 左侧找到 **Secrets and variables → Actions → New repository secret**
 3. 依次添加下面这些 Secrets（名字要完全一致）
 
