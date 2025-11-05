@@ -45,11 +45,11 @@ signdata = {
 }
 rsign = requests.post('https://www.t00ls.com/ajax-sign.json', data = signdata, cookies = tscookie)
 rsinj = json.loads(rsign.text)
-datamsg={"text":"T00ls签到成功！","desp":rsign.text}
+datamsg={"title":"T00ls签到成功！","desp":rsign.text}
 if (rsinj["status"] == "success"):
   print("签到成功！")
   if(SCKEY != ''):
-    requests.post("https://sc.ftqq.com/"+SCKEY+".send",data=datamsg)
+    requests.post("https://sctapi.ftqq.com/"+SCKEY+".send",data=datamsg)
 elif(rsinj["message"] == "alreadysign"):
   print("今天已经签到过了！")
 else :
