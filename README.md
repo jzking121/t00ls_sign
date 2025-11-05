@@ -1,21 +1,82 @@
-# T00ls sign
-使用 GitHub Actions 每天自动执行 T00ls 签到
-参(chao)考(xi)自 https://github.com/xirikm/hostloc-auto-get-points
+**用 GitHub Actions 自动帮你每天在 T00ls 上签到拿积分**。
+下面一步一步教你怎么用（无须自己买服务器，也不用自己去跑脚本）。
 
-## 使用说明
+### 一、先 Fork 仓库
 
-Fork 本仓库，然后点击你的仓库右上角的 Settings，找到 Secrets 这一项，添加两个秘密环境变量。
+右上角点击 **Fork**，把它 Fork 到你自己的账号下。
+后面的所有操作都在你自己的 Fork 仓库里完成。
+
+---
+
+### 二、在 Settings 里配置 Secrets（环境变量）
+
+进入你 Fork 之后的仓库，按下面步骤：
+
+1. 点顶部的 **Settings**
+2. 左侧找到 **Secrets and variables → Actions → New repository secret**
+3. 依次添加下面这些 Secrets（名字要完全一致）
+
+必填：
+
+* `T00LS_USERNAME`：你在 T00ls 的账号名
+* `T00LS_PASSWORD`：你在 T00ls 的账号密码
+* `T00LS_MD5`：
+
+  * 如果你上面的密码是**明文密码**，这里填：`False` 或留空
+  * 如果你存的是密码的 **md5 值**，这里填：`True`
+* `T00LS_QID`：登录问题的 **问题 ID**（例如 1、2 之类）
+* `T00LS_QANS`：登录问题的 **答案**
+
+可选（用于微信推送结果）：
+
+* `T00LS_SCKEY`：Server酱申请到的 `skey`，填了之后，每次签到成功/失败会给你推送通知。
+
+---
+
+### 三、开启 GitHub Actions
+
+1. 在你的仓库顶部点击 **Actions**。
+2. 第一次进去会看到一个提示，点 **“I understand my workflows, go ahead and enable them”** 之类的按钮，表示允许这个仓库使用 GitHub Actions
+
+---
+
+### 四、手动触发一次（非常关键）
+
+GitHub 有个坑：**Fork 过来的定时任务默认不会自己跑，必须手动触发一次之后，定时才会生效。**
+
+你可以这样做：
+
+1. 随便改一下仓库里的文件，比如：
+
+   * 打开 `README.md`，增加几个字，或者删几个字都行
+2. 提交（Commit）这次修改。
+
+只要有一次 `push`，GitHub Actions 里的 `T00ls Sign` workflow 就会被触发执行一次。
+
+---
+
+### 五、之后就会每天自动签到
+
+仓库里已经写好了 GitHub Actions 的配置文件，会在**每天 UTC 时间 17 点（也就是北京时间凌晨 1 点左右）自动运行**签到脚本。
+
+你也可以随时通过：
+
+* 再 push 一次
+* 或在 Actions 页面里手动点 “Run workflow”
+
+来手动执行一次。
+
+---
+
+### 六、怎么看运行结果？
+
+1. 打开仓库 → 点击 **Actions**
+2. 左边流程列表里选 `T00ls Sign`
+3. 点进某一次运行记录，查看日志输出。
+
+注意仓库说明里提到：
+为了做到“有一个账号失败，后面账号还能继续跑”，**这个 Action 的状态几乎总是显示绿色成功**，所以你要以日志内容为准，看里面有没有报错信息。
+
+---
 
 
-
-其中 `T00LS_USERNAME` 存放你在 T00ls 的帐户名，`T00LS_PASSWORD` 存放你的帐户密码， `T00LS_MD5` 在存放的密码是 md5 时设置为 `True`， `T00LS_QID` 存放你的登录问题ID，`T00LS_QANS` 存放你的登录问题答案， `T00LS_SCKEY` 则存放Server酱申请的skey。
-
-设置好环境变量后点击你的仓库上方的 Actions 选项，会打开一个如下的页面，点击 `I understand...` 按钮确认在 Fork 的仓库上启用 GitHub Actions 。
-
-![VZ5E.png](https://img.xirikm.net/images/VZ5E.png)
-
-最后在你这个 Fork 的仓库内随便改点什么（比如给 README 文件删掉或者增加几个字符）提交一下手动触发一次 GitHub Actions 就可以了 **（重要！！！测试发现在 Fork 的仓库上 GitHub Actions 的定时任务不会自动执行，必须要手动触发一次后才能正常工作）** 。
-
-仓库内包含的 GitHub Actions 配置文件会在每天国际标准时间 17 点（北京时间凌晨 1 点）自动执行获取积分的脚本文件，你也可以通过 `Push` 操作手动触发执行（测试发现定时任务的执行可能有 5 到 10 分钟的延迟，属正常现象，耐心等待即可）。
-
-**注意：** 为了实现某个链接/帐户访问出错时不中断程序继续尝试下一个，GitHub Actions 的状态将永远是“通过”（显示绿色的✔），请自行检查 GitHub Actions 日志 `T00ls Sign` 项的输出确定程序执行情况。
