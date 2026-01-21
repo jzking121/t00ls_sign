@@ -19,7 +19,8 @@ jobs:
 
       - name: Install deps
         run: |
-          pip install requests
+          # 核心修改：增加 cloudscraper 依赖安装
+          pip install requests cloudscraper
 
       - name: Run T00ls sign
         env:
